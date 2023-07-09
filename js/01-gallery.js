@@ -34,15 +34,23 @@ function onImageClick(evt) {
     return;
   }
   const instance = basicLightbox.create(
-    `<img src="${evt.target.dataset.source}" width="800" height="600">`
+    `<img src="${evt.target.dataset.source}" width="800" height="600">`,
+    {
+      onShow: () => {
+        window.addEventListener("keydown", onKeyPress);
+      },
+      onClose: () => {
+        window.removeEventListener("keydown", onKeyPress);
+      },
+    }
   );
   instance.show();
 
-  galleryElement.addEventListener("keydown", (evt) => {
-    if (evt.code === "Escape") {
+  function onKeyPress(event) {
+    if (event.code === "Escape") {
       instance.close();
     }
-  });
+  }
 }
 
 function blockStandardAction(evt) {
